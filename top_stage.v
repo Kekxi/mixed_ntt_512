@@ -37,10 +37,17 @@ module top_stage(
     wire [1:0] sel_a_0,sel_a_1,sel_a_2,sel_a_3;
 
     wire [6:0] bank_address_0,bank_address_1,bank_address_2,bank_address_3; 
+    wire [6:0] bank_address_0_dy_reg_s,bank_address_1_dy_reg_s,bank_address_2_dy_reg_s,bank_address_3_dy_reg_s;
+    wire [6:0] bank_address_0_dy_reg_i,bank_address_1_dy_reg_i,bank_address_2_dy_reg_i,bank_address_3_dy_reg_i;
 
     wire [6:0] bank_address_0_dy,bank_address_1_dy;
     wire [6:0] bank_address_2_dy,bank_address_3_dy;    
 
+
+    assign bank_address_0_dy = sel == 0 ?  bank_address_0_dy_reg_s :bank_address_0_dy_reg_i;
+    assign bank_address_1_dy = sel == 0 ?  bank_address_1_dy_reg_s :bank_address_1_dy_reg_i;
+    assign bank_address_2_dy = sel == 0 ?  bank_address_2_dy_reg_s :bank_address_2_dy_reg_i;
+    assign bank_address_3_dy = sel == 0 ?  bank_address_3_dy_reg_s :bank_address_3_dy_reg_i;
 
     //twiddle factors into banks
     wire [35:0] w;  
@@ -106,10 +113,15 @@ module top_stage(
                  .new_address_2(bank_address_2),.new_address_3(bank_address_3)
                  );    
 
-  shift_13 #(.data_width(7)) shf1 (.clk(clk),.rst(rst),.din(bank_address_0),.dout(bank_address_0_dy));   
-  shift_13 #(.data_width(7)) shf2 (.clk(clk),.rst(rst),.din(bank_address_1),.dout(bank_address_1_dy)); 
-  shift_13 #(.data_width(7)) shf3 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy)); 
-  shift_13 #(.data_width(7)) shf4 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy));     
+  shift_7 #(.data_width(5)) shf1 (.clk(clk),.rst(rst),.din(bank_address_0),.dout(bank_address_0_dy_reg_s));   
+  shift_7 #(.data_width(5)) shf2 (.clk(clk),.rst(rst),.din(bank_address_1),.dout(bank_address_1_dy_reg_s)); 
+  shift_7 #(.data_width(5)) shf3 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy_reg_s)); 
+  shift_7 #(.data_width(5)) shf4 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy_reg_s));     
+
+  shift_13 #(.data_width(5)) shf5 (.clk(clk),.rst(rst),.din(bank_address_0),.dout(bank_address_0_dy_reg_i));   
+  shift_13 #(.data_width(5)) shf6 (.clk(clk),.rst(rst),.din(bank_address_1),.dout(bank_address_1_dy_reg_i)); 
+  shift_13 #(.data_width(5)) shf7 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy_reg_i)); 
+  shift_13 #(.data_width(5)) shf8 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy_reg_i));       
     
   (*DONT_TOUCH = "true"*) 
   data_bank bank_0(
@@ -176,8 +188,7 @@ module top_stage(
   (*DONT_TOUCH = "true"*) 
   network_bf_out mux4(
                        .clk(clk),.rst(rst),
-                      //  .sel(sel),
-                      //  .en(en),
+                       .sel(sel),
                        .bf_0_upper(bf_0_upper),.bf_0_lower(bf_0_lower),
                        .bf_1_upper(bf_1_upper),.bf_1_lower(bf_1_lower),
                        .sel_a_0(sel_a_0),.sel_a_1(sel_a_1),

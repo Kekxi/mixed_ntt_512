@@ -25,10 +25,7 @@ module PE0 #(parameter data_width = 12)(
     //mux about signal v
     DFF dff_v(.clk(clk),.rst(rst),.d(v),.q(v_q1));
     assign mux_out3 = v_q1;
-    // configurable_modular_mul mult_pe (.clk(clk_en),.rst(rst),.sel(sel),.A(mux_out3),.B(mux_out4),.C_out(mult_out_1));
-    // configurable_modular_mul mult_pe0(.clk(clk_in),.rst(rst),.sel(sel),.A(mux_out3),.B(mux_out4),.C_out(mult_out_2));
     configurable_modular_mul mult_pe(.clk(clk),.rst(rst),.sel(sel),.A(mux_out3),.B(mux_out4),.C_out(mult_out));
-    // assign mux_out2 = sel == 1'b0 ? mult_out_1 : mult_out_2;
     assign mux_out2 = mult_out;
     
     //mux about tf
