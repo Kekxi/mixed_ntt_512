@@ -2,7 +2,7 @@ module fsm (
   input clk,rst,
   input [3:0] conf,
   output wire sel,
-  // output wire sel_ntt,
+  output wire sel_ntt,
   output wire [6:0] i,
   output wire [6:0] k, //max = 127
   output wire [6:0] j, //max = 127
@@ -23,7 +23,7 @@ module fsm (
   parameter DONE_RADIX4_INTT = 4'b1000;
 
 
-  // reg sel_reg_ntt;
+  reg sel_reg_ntt;
   reg sel_reg;
   reg wen_reg,ren_reg,en_reg;
   wire wen_s,en_reg_q_s;
@@ -45,12 +45,6 @@ module fsm (
 
   assign en = ((conf == DONE_RADIX4_NTT) || (conf == DONE_RADIX2_NTT) || (conf == DONE_RADIX2_INTT) || (conf == DONE_RADIX4_INTT)) ? en_reg_q : en_reg_q_tmp;
 
-  // shift_8 #(.data_width(1)) shif_iwen_s(.clk(clk),.rst(rst),.din(wen_reg),.dout(wen_s));
-  // shift_7 #(.data_width(1)) shif_ien_s(.clk(clk),.rst(rst),.din(en_reg_q_tmp),.dout(en_reg_q_s));
-
-  // shift_14 #(.data_width(1)) shif_iwen_i(.clk(clk),.rst(rst),.din(wen_reg),.dout(wen_i));
-  // shift_13 #(.data_width(1)) shif_ien_i(.clk(clk),.rst(rst),.din(en_reg_q_tmp),.dout(en_reg_q_i));
-
   shifter #(.data_width(1) ,.depth(8)) shif_iwen_s(.clk(clk),.rst(rst),.din(wen_reg),.dout(wen_s));
   shifter #(.data_width(1) ,.depth(7)) shif_ien_s(.clk(clk),.rst(rst),.din(en_reg_q_tmp),.dout(en_reg_q_s));
 
@@ -65,7 +59,7 @@ module fsm (
 
   // 生成控制信号
   DFF #(.data_width(1)) dff_sel0(.clk(clk),.rst(rst),.d(sel_reg),.q(sel));
-  // DFF #(.data_width(1)) dff_sel1(.clk(clk),.rst(rst),.d(sel_reg_ntt),.q(sel_ntt));
+  DFF #(.data_width(1)) dff_sel1(.clk(clk),.rst(rst),.d(sel_reg_ntt),.q(sel_ntt));
   always@(posedge clk or posedge rst)
   begin
     if(rst)
@@ -84,7 +78,7 @@ module fsm (
     done_reg = 3'b0;
     case(conf_state)
     IDLE:begin 
-        // sel_reg_ntt =0;
+        sel_reg_ntt =0;
         sel_reg = 0;
         en_reg  = 0; 
         wen_reg = 0;
@@ -93,7 +87,7 @@ module fsm (
         end
 
     RADIX2_NTT:begin
-        // sel_reg_ntt =0;
+        sel_reg_ntt =0;
         sel_reg = 0;
         en_reg = 1; 
         wen_reg = 1;
@@ -105,7 +99,7 @@ module fsm (
         end
 
     RADIX4_NTT:begin 
-        //  sel_reg_ntt =0; 
+         sel_reg_ntt =0; 
          sel_reg = 1;
          en_reg = 1; 
          wen_reg = 1;
@@ -117,7 +111,7 @@ module fsm (
          end
 
     DONE_RADIX2_NTT:begin 
-        //  sel_reg_ntt =0; 
+         sel_reg_ntt =0; 
          sel_reg = 0;
          en_reg = 0;
          wen_reg = 0;
@@ -126,7 +120,7 @@ module fsm (
         end
 
     DONE_RADIX4_NTT:begin 
-        //  sel_reg_ntt =0; 
+         sel_reg_ntt =0; 
          sel_reg = 1;
          en_reg = 0;
          wen_reg = 0;
@@ -134,8 +128,50 @@ module fsm (
         //  p_reg <= 3'b0;
         end
 
+    RADIX2_INTT:begin
+        sel_reg_ntt =1; 
+        sel_reg = 0;
+        en_reg = 1; 
+        wen_reg = 1;
+        ren_reg = 1;
+         if(i_reg == 5'd127)
+           done_reg = 3'b100;
+         else
+           done_reg = 3'b0;
+        end
+
+    RADIX4_INTT:begin 
+         sel_reg_ntt =1; 
+         sel_reg = 1;
+         en_reg = 1; 
+         wen_reg = 1;
+         ren_reg = 1;
+         if((p_reg == 3)&&(k_reg == 0)&&(j_reg == 127))begin
+           done_reg = 3'b011; end
+         else begin
+           done_reg = 3'b0; end
+         end
+
+    DONE_RADIX2_INTT:begin 
+         sel_reg_ntt =1; 
+         sel_reg = 0;
+         en_reg = 0;
+         wen_reg = 0;
+         ren_reg = 0; 
+         p_reg <= 3'b0;
+        end
+
+    DONE_RADIX4_INTT:begin 
+         sel_reg_ntt =1; 
+         sel_reg = 1;
+         en_reg = 0;
+         wen_reg = 0;
+         ren_reg = 0; 
+         p_reg <= 3'b0;
+        end
+
     default:begin 
-        //  sel_reg_ntt =0; 
+         sel_reg_ntt =0; 
          sel_reg = 0;
          done_reg = 2'b0;
          en_reg = 0;
@@ -158,7 +194,7 @@ module fsm (
          k_reg <= 0;
          i_reg <= 0;
      end
-     else if((conf_state == RADIX2_NTT))
+     else if((conf_state == RADIX2_NTT) || (conf_state == RADIX2_INTT))
      begin
          i_reg <= i_reg + 1;
      end
@@ -168,7 +204,7 @@ module fsm (
          p_reg <= 3'b100;
      end
 
-     else if((conf_state == RADIX4_NTT))
+     else if((conf_state == RADIX4_NTT) || (conf_state == RADIX4_INTT))
      begin
         if(j_reg == (1 << (p_shift)) - 1)
         begin
@@ -180,9 +216,11 @@ module fsm (
                    p_reg <= begin_stage;
               else
               begin
-                   p_reg <= p_reg - 1;
+                  if(conf_state == RADIX4_INTT)
+                     p_reg <= p_reg + 1;
+                  else
+                     p_reg <= p_reg - 1;
               end
-
            end
            else
               k_reg <= k_reg + 1;

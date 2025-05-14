@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module modular_mul #(parameter data_width = 12)(
+module modular_mul #(parameter data_width = 14)(
     input clk,rst,
     input [data_width-1:0] A_in, B_in,
     output wire [data_width-1:0]  P_out

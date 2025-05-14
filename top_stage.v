@@ -6,7 +6,7 @@ module top_stage(
 
     //fsm port signal
     wire sel;
-    // wire sel_ntt;
+    wire sel_ntt;
     wire [6:0] i;
     wire [6:0] k,j;
     wire [2:0] p;
@@ -20,14 +20,14 @@ module top_stage(
     wire [11:0] q0,q1,q2,q3;
 
     // radix-4_bf_out  bf_0_upper,bf_0_lower
-    wire [11:0] bf_0_upper,bf_0_lower;
-    wire [11:0] bf_1_upper,bf_1_lower;
+    wire [13:0] bf_0_upper,bf_0_lower;
+    wire [13:0] bf_1_upper,bf_1_lower;
 
     //data into bfu
-    wire [11:0] u0,v0,u1,v1;
+    wire [13:0] u0,v0,u1,v1;
 
     // //data into banks
-    wire [11:0] d0,d1,d2,d3;
+    wire [13:0] d0,d1,d2,d3;
 
     //memory map port signal
     wire [6:0] new_address_0,new_address_1,new_address_2,new_address_3;
@@ -51,7 +51,7 @@ module top_stage(
 
     //twiddle factors into banks
     wire [35:0] w;  
-    wire [11:0] win1,win2,win3;
+    wire [13:0] win1,win2,win3;
     
     //twiddle factor address
     wire [6:0] tf_address;
@@ -60,6 +60,7 @@ module top_stage(
     fsm m1( .clk(clk),.rst(rst),
             .conf(conf),
             .sel(sel),
+            .sel_ntt(sel_ntt),
             .i(i),
             .j(j),
             .k(k),
@@ -118,10 +119,10 @@ module top_stage(
    shifter #(.data_width(7) ,.depth(7))   shf3 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy_reg_s)); 
    shifter #(.data_width(7) ,.depth(7))   shf4 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy_reg_s));     
 
-   shifter #(.data_width(7)  ,.depth(13)) shf5 (.clk(clk),.rst(rst),.din(bank_address_0),.dout(bank_address_0_dy_reg_i));   
-   shifter #(.data_width(7)  ,.depth(13)) shf6 (.clk(clk),.rst(rst),.din(bank_address_1),.dout(bank_address_1_dy_reg_i)); 
-   shifter #(.data_width(7)  ,.depth(13)) shf7 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy_reg_i)); 
-   shifter #(.data_width(7)  ,.depth(13)) shf8 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy_reg_i));       
+   shifter #(.data_width(7) ,.depth(13)) shf5 (.clk(clk),.rst(rst),.din(bank_address_0),.dout(bank_address_0_dy_reg_i));   
+   shifter #(.data_width(7) ,.depth(13)) shf6 (.clk(clk),.rst(rst),.din(bank_address_1),.dout(bank_address_1_dy_reg_i)); 
+   shifter #(.data_width(7) ,.depth(13)) shf7 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy_reg_i)); 
+   shifter #(.data_width(7) ,.depth(13)) shf8 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy_reg_i));       
     
   (*DONT_TOUCH = "true"*) 
   data_bank bank_0(
@@ -182,6 +183,7 @@ module top_stage(
            .u0(u0),.v0(u1),.u1(v0),.v1(v1),
            .wa1(win1),.wa2(win2),.wa3(win3),
            .sel(sel),
+           .sel_ntt(sel_ntt),
            .bf_0_upper(bf_0_upper),.bf_0_lower(bf_0_lower),
            .bf_1_upper(bf_1_upper),.bf_1_lower(bf_1_lower)); 
 

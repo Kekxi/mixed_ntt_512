@@ -3,13 +3,13 @@ module data_bank
     input clk,
     input [6:0] A1,
     input [6:0] A2,
-    input [11:0] D,
+    input [13:0] D,
     input IWEN,
     input IREN,
     input IEN,
-    output reg [11:0] Q
+    output reg [13:0] Q
     );
-    (*ram_style = "block"*)reg [11:0] bank [127:0];
+    (*ram_style = "block"*)reg [13:0] bank [127:0];
 
     always@(posedge clk)
     begin

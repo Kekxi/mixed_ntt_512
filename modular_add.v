@@ -1,4 +1,4 @@
-module modular_add #(parameter data_width = 12) (
+module modular_add #(parameter data_width = 14) (
     input [data_width-1:0] x_add,
     input [data_width-1:0] y_add,
     output [data_width-1:0] z_add
