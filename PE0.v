@@ -19,13 +19,15 @@ module PE0 #(parameter data_width = 12)(
     
     //mux about signal u 
     DFF dff_u(.clk(clk),.rst(rst),.d(u),.q(u_q1));
-    shift_4  shf_u (.clk(clk),.rst(rst),.din(u_q1),.dout(u_q5));
+    // shift_4  shf_u (.clk(clk),.rst(rst),.din(u_q1),.dout(u_q5));
+    shifter #(.data_width(12) ,.depth(4))  shf_u (.clk(clk),.rst(rst),.din(u_q1),.dout(u_q5));
     assign mux_out1 = u_q5;
     
     //mux about signal v
     DFF dff_v(.clk(clk),.rst(rst),.d(v),.q(v_q1));
     assign mux_out3 = v_q1;
     configurable_modular_mul mult_pe(.clk(clk),.rst(rst),.sel(sel),.A(mux_out3),.B(mux_out4),.C_out(mult_out));
+    // assign mux_out2 = sel == 1'b0 ? mult_out_1 : mult_out_2;
     assign mux_out2 = mult_out;
     
     //mux about tf

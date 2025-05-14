@@ -44,7 +44,7 @@ module PE3 #(parameter data_width = 12)(
     
     //mux about signal u 
     DFF dff_u(.clk(clk),.rst(rst),.d(u),.q(u_q1));
-    shift_4  shf_u (.clk(clk),.rst(rst),.din(u_q1),.dout(u_q5));
+    shifter #(.data_width(12) ,.depth(4)) shf_u (.clk(clk),.rst(rst),.din(u_q1),.dout(u_q5));
     assign mux_out1 = u_q5;
     
     //mux about signal v

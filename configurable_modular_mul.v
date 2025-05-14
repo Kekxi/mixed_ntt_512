@@ -43,6 +43,7 @@ module configurable_modular_mul #(parameter data_width = 12)(
     assign mux_out2 = sel == 1'b0 ? PBr : Br;
     
     assign mul1 = mux_out1 * mux_out2;
+    
     DFF #(.data_width(37)) d1(.clk(clk),.rst(rst),.d(mul1),.q(mul1_q));
 
     assign mul1_shift = sel == 1'b0 ? mul1_q[25:13] : mul1_q[24:13] ;

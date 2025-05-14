@@ -10,15 +10,15 @@ module network_bf_out #(parameter data_width = 12)(
     wire [1:0] sel_a_0_out_reg_s,sel_a_1_out_reg_s,sel_a_2_out_reg_s,sel_a_3_out_reg_s;
     wire [1:0] sel_a_0_out_reg_i,sel_a_1_out_reg_i,sel_a_2_out_reg_i,sel_a_3_out_reg_i;
 
-    shift_7 #(.data_width(2)) shif1 (.clk(clk),.rst(rst),.din(sel_a_0),.dout(sel_a_0_out_reg_s));
-    shift_7 #(.data_width(2)) shif2 (.clk(clk),.rst(rst),.din(sel_a_1),.dout(sel_a_1_out_reg_s));
-    shift_7 #(.data_width(2)) shif3 (.clk(clk),.rst(rst),.din(sel_a_2),.dout(sel_a_2_out_reg_s));
-    shift_7 #(.data_width(2)) shif4 (.clk(clk),.rst(rst),.din(sel_a_3),.dout(sel_a_3_out_reg_s));
+    shifter #(.data_width(2) ,.depth(7)) shif1 (.clk(clk),.rst(rst),.din(sel_a_0),.dout(sel_a_0_out_reg_s));
+    shifter #(.data_width(2) ,.depth(7)) shif2 (.clk(clk),.rst(rst),.din(sel_a_1),.dout(sel_a_1_out_reg_s));
+    shifter #(.data_width(2) ,.depth(7)) shif3 (.clk(clk),.rst(rst),.din(sel_a_2),.dout(sel_a_2_out_reg_s));
+    shifter #(.data_width(2) ,.depth(7)) shif4 (.clk(clk),.rst(rst),.din(sel_a_3),.dout(sel_a_3_out_reg_s));
 
-    shift_13 #(.data_width(2)) shif5 (.clk(clk),.rst(rst),.din(sel_a_0),.dout(sel_a_0_out_reg_i));
-    shift_13 #(.data_width(2)) shif6 (.clk(clk),.rst(rst),.din(sel_a_1),.dout(sel_a_1_out_reg_i));
-    shift_13 #(.data_width(2)) shif7 (.clk(clk),.rst(rst),.din(sel_a_2),.dout(sel_a_2_out_reg_i));
-    shift_13 #(.data_width(2)) shif8 (.clk(clk),.rst(rst),.din(sel_a_3),.dout(sel_a_3_out_reg_i));
+    shifter #(.data_width(2),.depth(13)) shif5 (.clk(clk),.rst(rst),.din(sel_a_0),.dout(sel_a_0_out_reg_i));
+    shifter #(.data_width(2),.depth(13)) shif6 (.clk(clk),.rst(rst),.din(sel_a_1),.dout(sel_a_1_out_reg_i));
+    shifter #(.data_width(2),.depth(13)) shif7 (.clk(clk),.rst(rst),.din(sel_a_2),.dout(sel_a_2_out_reg_i));
+    shifter #(.data_width(2),.depth(13)) shif8 (.clk(clk),.rst(rst),.din(sel_a_3),.dout(sel_a_3_out_reg_i));
 
     assign sel_a_0_out = sel == 0 ?  sel_a_0_out_reg_s :sel_a_0_out_reg_i;
     assign sel_a_1_out = sel == 0 ?  sel_a_1_out_reg_s :sel_a_1_out_reg_i;

@@ -113,15 +113,15 @@ module top_stage(
                  .new_address_2(bank_address_2),.new_address_3(bank_address_3)
                  );    
 
-  shift_7 #(.data_width(5)) shf1 (.clk(clk),.rst(rst),.din(bank_address_0),.dout(bank_address_0_dy_reg_s));   
-  shift_7 #(.data_width(5)) shf2 (.clk(clk),.rst(rst),.din(bank_address_1),.dout(bank_address_1_dy_reg_s)); 
-  shift_7 #(.data_width(5)) shf3 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy_reg_s)); 
-  shift_7 #(.data_width(5)) shf4 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy_reg_s));     
+   shifter #(.data_width(7) ,.depth(7))   shf1 (.clk(clk),.rst(rst),.din(bank_address_0),.dout(bank_address_0_dy_reg_s));   
+   shifter #(.data_width(7) ,.depth(7))   shf2 (.clk(clk),.rst(rst),.din(bank_address_1),.dout(bank_address_1_dy_reg_s)); 
+   shifter #(.data_width(7) ,.depth(7))   shf3 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy_reg_s)); 
+   shifter #(.data_width(7) ,.depth(7))   shf4 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy_reg_s));     
 
-  shift_13 #(.data_width(5)) shf5 (.clk(clk),.rst(rst),.din(bank_address_0),.dout(bank_address_0_dy_reg_i));   
-  shift_13 #(.data_width(5)) shf6 (.clk(clk),.rst(rst),.din(bank_address_1),.dout(bank_address_1_dy_reg_i)); 
-  shift_13 #(.data_width(5)) shf7 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy_reg_i)); 
-  shift_13 #(.data_width(5)) shf8 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy_reg_i));       
+   shifter #(.data_width(7)  ,.depth(13)) shf5 (.clk(clk),.rst(rst),.din(bank_address_0),.dout(bank_address_0_dy_reg_i));   
+   shifter #(.data_width(7)  ,.depth(13)) shf6 (.clk(clk),.rst(rst),.din(bank_address_1),.dout(bank_address_1_dy_reg_i)); 
+   shifter #(.data_width(7)  ,.depth(13)) shf7 (.clk(clk),.rst(rst),.din(bank_address_2),.dout(bank_address_2_dy_reg_i)); 
+   shifter #(.data_width(7)  ,.depth(13)) shf8 (.clk(clk),.rst(rst),.din(bank_address_3),.dout(bank_address_3_dy_reg_i));       
     
   (*DONT_TOUCH = "true"*) 
   data_bank bank_0(
