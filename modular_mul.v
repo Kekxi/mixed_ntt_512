@@ -26,8 +26,8 @@ module modular_mul #(parameter data_width = 14)(
     output wire [data_width-1:0]  P_out
     );
     
-    parameter q0 = 13'd5039;
-    parameter q = 12'd3329;
+    parameter q0 = 15'h5553;
+    parameter q = 14'd12289;
     wire [data_width*2-1:0] z;//28
     wire [data_width:0] z_shift;//28-13=15
     wire [data_width*2-1:0] z_q1;

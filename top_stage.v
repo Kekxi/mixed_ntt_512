@@ -1,5 +1,9 @@
 `timescale 1ns / 1ps
-module top_stage(
+module top_stage
+    #(parameter addr_rom_width = 8,
+                 addr_width = 7,
+                 data_width = 14)
+    (
     input clk,rst,
     input [3:0] conf,
     output [1:0] done_flag);
@@ -17,7 +21,7 @@ module top_stage(
     wire [8:0] old_address_0,old_address_1,old_address_2,old_address_3;
 
     // data_in 
-    wire [11:0] q0,q1,q2,q3;
+    wire [13:0] q0,q1,q2,q3;
 
     // radix-4_bf_out  bf_0_upper,bf_0_lower
     wire [13:0] bf_0_upper,bf_0_lower;
@@ -50,7 +54,7 @@ module top_stage(
     assign bank_address_3_dy = sel == 0 ?  bank_address_3_dy_reg_s :bank_address_3_dy_reg_i;
 
     //twiddle factors into banks
-    wire [35:0] w;  
+    wire [41:0] w;  
     wire [13:0] win1,win2,win3;
     
     //twiddle factor address
@@ -200,9 +204,9 @@ module top_stage(
 
   tf_address_generator m_tf(.clk(clk),.rst(rst),.conf(conf),.k(k),.p(p),.tf_address(tf_address));  
   
-  assign win1 = w[35:24];
-  assign win2 = w[23:12];
-  assign win3 = w[11:0];
+  assign win1 = w[3*data_width-1:2*data_width];
+  assign win2 = w[2*data_width-1:data_width];
+  assign win3 = w[data_width-1:0];
 
   (*DONT_TOUCH = "true"*) 
   tf_ROM rom0(

@@ -4,7 +4,7 @@ module modular_substraction #(parameter data_width = 14)(
     output [data_width-1:0] z_sub
     );
     
-    parameter M = 12'd3329;
+    parameter M = 14'd12289;
     
     wire [data_width-1:0] q;
     wire c;

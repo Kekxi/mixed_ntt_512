@@ -18,9 +18,9 @@ module plantard_mm #(parameter data_width = 14)(
     parameter PBr_up  =15'd28824;
 
 
-    wire [27:0] mul1; 
-    wire [27:0] mul1_q; 
-    wire [42:0] mul1_shift; 
+    wire [28:0] mul1; 
+    wire [28:0] mul1_q; 
+    wire [43:0] mul1_shift; 
     // wire [13:0] A_in_q1; 
 
     wire [28:0] mul2; // 15+14=29位
@@ -29,7 +29,7 @@ module plantard_mm #(parameter data_width = 14)(
     wire [28:0] mul3; // 15+14=29位
     wire [28:0] mul3_q; 
 
-    wire [42:0] adder;
+    wire [43:0] adder;
     wire [14:0] adder_s,adder_shift;
     wire [29:0] add;
     wire [29:0] add_q;
@@ -41,13 +41,13 @@ module plantard_mm #(parameter data_width = 14)(
 
     assign mul1 = PBr_up * A_in; //15+14 29 
     DFF #(.data_width(29)) d0(.clk(clk),.rst(rst),.d(mul1),.q(mul1_q));
-    assign mul1_shift = mul1_q <<(data_width+1); //28+15=43
+    assign mul1_shift = mul1_q <<(data_width+1); //29+15=44
 
     // DFF #(.data_width(14)) d1(.clk(clk),.rst(rst),.d(A_in),.q(A_in_q1));  
     assign mul2 = A_in * PBr_low;
     DFF #(.data_width(29)) d2(.clk(clk),.rst(rst),.d(mul2),.q(mul2_q));
 
-    assign adder = mul1_shift + mul2_q; //43
+    assign adder = mul1_shift + mul2_q; //44
     assign adder_s = adder[29:15]; //15
     DFF #(.data_width(15)) d6(.clk(clk),.rst(rst),.d(adder_s),.q(adder_shift));
 

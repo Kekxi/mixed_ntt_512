@@ -20,12 +20,11 @@ module mixed_tb;
     # 2 conf = 1;
     # 1280 conf = 3;
     # 160 conf = 2;
-    // # 15 conf = 2;
     # 5126 conf = 4;
-    # 180 conf = 5;
-    // # 5126 conf = 8;
-    // # 500 conf = 6;
-    // # 1280 conf = 7;
+    # 160 conf = 6;
+    # 5126 conf = 8;
+    # 160 conf = 5;
+    # 1280 conf = 7;
   end
   
 

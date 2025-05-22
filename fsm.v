@@ -12,15 +12,15 @@ module fsm (
   output wire en,
   output wire [2:0] done_flag);
   
-  parameter IDLE = 4'b0000;
-  parameter RADIX2_NTT = 4'b0001;
-  parameter RADIX4_NTT = 4'b0010;
-  parameter DONE_RADIX2_NTT = 4'b0011;
-  parameter DONE_RADIX4_NTT = 4'b0100;
-  parameter RADIX2_INTT = 4'b0110;
-  parameter RADIX4_INTT = 4'b0101;
-  parameter DONE_RADIX2_INTT = 4'b0111;
-  parameter DONE_RADIX4_INTT = 4'b1000;
+  parameter IDLE = 4'b0000;             //0
+  parameter RADIX2_NTT = 4'b0001;       //1
+  parameter RADIX4_NTT = 4'b0010;       //2
+  parameter DONE_RADIX2_NTT = 4'b0011;  //3
+  parameter DONE_RADIX4_NTT = 4'b0100;  //4
+  parameter RADIX2_INTT = 4'b0110;      //5
+  parameter RADIX4_INTT = 4'b0101;      //6
+  parameter DONE_RADIX2_INTT = 4'b0111; //7
+  parameter DONE_RADIX4_INTT = 4'b1000; //8
 
 
   reg sel_reg_ntt;
@@ -158,7 +158,6 @@ module fsm (
          en_reg = 0;
          wen_reg = 0;
          ren_reg = 0; 
-         p_reg <= 3'b0;
         end
 
     DONE_RADIX4_INTT:begin 
@@ -167,7 +166,6 @@ module fsm (
          en_reg = 0;
          wen_reg = 0;
          ren_reg = 0; 
-         p_reg <= 3'b0;
         end
 
     default:begin 

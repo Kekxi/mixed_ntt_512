@@ -1,8 +1,8 @@
 module network_bf_in (
     input clk,rst,
     input [1:0] sel_a_0,sel_a_1,sel_a_2,sel_a_3,
-    input [11:0] q0,q1,q2,q3,
-    output reg [11:0] u0,v0,u1,v1
+    input [13:0] q0,q1,q2,q3,
+    output reg [13:0] u0,v0,u1,v1
     );
    
    wire [1:0] sel_a_0_tmp,sel_a_1_tmp,sel_a_2_tmp,sel_a_3_tmp;
@@ -14,10 +14,10 @@ module network_bf_in (
    
    always@(*)
    begin
-        u0 = 11'b0;
-        v0 = 11'b0;
-        u1 = 11'b0;
-        v1 = 11'b0;
+        u0 = 14'b0;
+        v0 = 14'b0;
+        u1 = 14'b0;
+        v1 = 14'b0;
         case(sel_a_0_tmp)
         2'b00:u0 = q0; 
         2'b01:v0 = q0;

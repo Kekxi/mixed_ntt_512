@@ -1,4 +1,4 @@
-module network_bf_out #(parameter data_width = 12)(
+module network_bf_out #(parameter data_width = 14)(
     input clk,rst,
     input sel,
     input [data_width-1:0] bf_0_upper,bf_0_lower,bf_1_upper,bf_1_lower,

@@ -59,20 +59,6 @@ module compact_bf #(parameter data_width = 14)(
      assign bf_1_upper = bf_1_upper_reg;
      assign bf_1_lower = bf_1_lower_reg;    
      
-     // assign PE0_in_up  =  u0;
-     // assign PE0_in_low =  v0;
-     // assign PE2_in_up  =  sel == 1'b0 ? 0: u1;
-     // assign PE2_in_low =  sel == 1'b0 ? 0: v1;
-
-     // assign PE1_in_up  =  sel == 1'b0 ? 0: PE0_out_up ;
-     // assign PE1_in_low =  sel == 1'b0 ? 0: PE2_out_up ;
-     // assign PE3_in_up  =  sel == 1'b0 ? u1: PE0_out_low;
-     // assign PE3_in_low =  sel == 1'b0 ? v1: PE2_out_low;
-
-     // assign bf_0_lower =  sel == 1'b0 ? PE0_out_up : PE1_out_up ;
-     // assign bf_0_upper =  sel == 1'b0 ? PE0_out_low: PE3_out_up ;
-     // assign bf_1_lower =  sel == 1'b0 ? PE3_out_up : PE1_out_low;
-     // assign bf_1_upper =  sel == 1'b0 ? PE3_out_low: PE3_out_low;
 
       always@(*)
      begin
@@ -86,9 +72,9 @@ module compact_bf #(parameter data_width = 14)(
                PE1_in_low_reg <= 0;
                PE3_in_up_reg  <= u1;
                PE3_in_low_reg <= v1;
-               bf_0_lower_reg <= PE0_out_up ; 
-               bf_0_upper_reg <= PE0_out_low;
-               bf_1_lower_reg <= PE3_out_up ;
+               bf_0_lower_reg <= PE0_out_up; 
+               bf_0_upper_reg <= PE3_out_up;
+               bf_1_lower_reg <= PE0_out_low;
                bf_1_upper_reg <= PE3_out_low;
           end
           else if((sel) & (~sel_ntt))

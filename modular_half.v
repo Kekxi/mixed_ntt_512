@@ -1,10 +1,10 @@
-module modular_half #(parameter data_width = 14)(
+module modular_half #(parameter data_width = 256)(
     input [data_width-1:0] x_half,
     output [data_width-1:0] y_half
     );
     
-    parameter M = 12'd3329;
-    parameter M_half = 11'd1665;//M+1/2
+    parameter M  = 14'd12289;
+    parameter M_half = 13'd6145;//M+1/2
 
     wire [data_width-1:0] x_sh;
     wire c;

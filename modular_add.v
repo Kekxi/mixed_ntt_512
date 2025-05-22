@@ -4,7 +4,7 @@ module modular_add #(parameter data_width = 14) (
     output [data_width-1:0] z_add
     );
     
-    parameter M = 12'd3329;
+    parameter M = 14'd12289;
     wire [data_width-1:0] s;
     wire c;
     wire [data_width-1:0] d;
